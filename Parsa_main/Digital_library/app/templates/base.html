@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Digital Library{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+
+<body class="{% if request.endpoint == 'index' %}homepage{% endif %} loaded">
+    <header>
+        <div class="container">
+            <div class="logo">My Digital Library</div>
+            <nav>
+                <a href="{{ url_for('index') }}" {% if request.endpoint=='index' %}class="active" {% endif %}>Home</a>
+                <a href="{{ url_for('browse_items') }}" {% if request.endpoint=='browse_items' %}class="active" {% endif
+                    %}>Browse Library</a>
+                <a href="{{ url_for('contact') }}" {% if request.endpoint=='contact' %}class="active" {% endif
+                    %}>Contact</a>
+                {% if is_admin_page %}
+                <a href="{{ url_for('admin_dashboard') }}">Upload</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="content">
+        {% block content %}
+        {% if request.endpoint == 'index' %}
+        <section class="hero">
+            <div class="container">
+                <h1>Discover and Learn</h1>
+                <div class="search-bar">
+                    <form action="{{ url_for('search_results') }}" method="get">
+                        <input type="text" name="query" placeholder="Search for books...">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('browse_items') }}">Browse Library</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

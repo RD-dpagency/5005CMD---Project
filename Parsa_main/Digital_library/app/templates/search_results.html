@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="search-results-header">
+    <div class="container">
+        <h1>Search Results</h1>
+        {% if query %}
+        <p>You searched for: <strong>{{ query }}</strong></p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="search-results-content">
+    <div class="container">
+        {% if results %}
+        <div class="file-grid">
+            {% for file in results %}
+            <div class="file-card">
+                <div class="file-image">
+                    <img src="{{ url_for('static', filename='default_file_icon.png') }}" alt="File Icon">
+                </div>
+                <div class="file-details">
+                    <h3>{{ file.filename }}</h3>
+                    <p>Category: {{ file.category }}</p>
+                    <p>Uploaded: {{ file.upload_date.strftime('%Y-%m-%d') }}</p>
+                    <a href="{{ url_for('download_file', filename=file.filename) }}" download>Download</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        {% if query %}
+        <p>No files found matching your search query.</p>
+        {% else %}
+        <p>Please enter a search term.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
