@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komodo Hub</title>
+    <style>
+        body {  
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .header {
+            background-color: black;
+            color: white;
+            width: 100%;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-top: 80px;
+        }
+        .message-container {
+            background-color: black;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-top: 80px;
+        }
+        input[type="email"], input[type="password"], input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .sign-up-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 14px;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+            opacity: 0;
+            transform: translateY(100%);
+            animation: fadeIn 1s ease-in-out forwards;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cookie-text {
+            flex-grow: 1;
+            padding-left: 20px;
+        }
+        .cookie-buttons {
+            padding-right: 20px;
+        }
+        .cookie-buttons button {
+            margin-left: 10px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .accept {
+            background-color: #28a745;
+            color: white;
+        }
+        .manage {
+            background-color: #ffc107;
+            color: black;
+        }
+        .accept:hover {
+            background-color: #218838;
+        }
+        .manage:hover {
+            background-color: #e0a800;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(100%);
+            }
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dashboard-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .card-text {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        function validateLogin(event) {
+            event.preventDefault();
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            let termsChecked = document.getElementById('terms').checked;
+            if (!termsChecked) {
+                alert('You must agree to the Terms and Conditions to proceed.');
+                return;
+            }
+
+            if (email && password) {
+                showPage('user-type-selection');
+            } else {
+                alert('Please fill in both email and password');
+            }
+        }
+
+        function validateAccessCode(event) {
+            event.preventDefault();
+            let accessCode = document.getElementById('accessCode').value;
+            let termsChecked = document.getElementById('terms').checked;
+            if (!termsChecked) {
+                alert('You must agree to the Terms and Conditions to proceed.');
+                return;
+            }
+
+            if (accessCode.length === 6) {
+                showPage('student-dashboard-page');
+            } else {
+                alert('Access Code must be 6 digits long.');
+            }
+        }
+
+        function continueToNextPage() {
+            window.location.href = 'next-page.html';
+        }
+
+        function hideCookieBanner() {
+            let banner = document.getElementById("cookie-banner");
+            banner.style.animation = "fadeOut 1s ease-in-out forwards";
+            setTimeout(() => {
+                banner.style.display = "none";
+            }, 1000);
+        }
+
+        function showSignUpPage() {
+            showPage('sign-up-page');
+        }
+
+        function signUp(event) {
+            event.preventDefault();
+            let forename = document.getElementById('forename').value;
+            let surname = document.getElementById('surname').value;
+            let email = document.getElementById('signUpEmail').value;
+            let password = document.getElementById('signUpPassword').value;
+            let termsChecked = document.getElementById('terms-signup').checked;
+
+            if (!forename || !surname || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (!termsChecked) {
+                alert('You must agree to the Terms and Conditions to proceed.');
+                return;
+            }
+
+            alert('Account created successfully!');
+            showPage('login-page');
+        }
+    </script>
+</head>
+<body>
+    <div class="header">Komodo Hub</div>
+    
+    <!-- Login Page -->
+    <div class="container page" id="login-page">
+        <h2>Welcome to Komodo Hub!</h2>
+        <p>Enter your details to log in</p>
+        <form onsubmit="validateLogin(event)">
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <br>
+            <input type="checkbox" id="terms"> I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            <br><br>
+            <button type="submit">Login</button>
+        </form>
+        <div class="sign-up-link">
+            <a href="#" onclick="showSignUpPage()">Don't have an account? Sign up</a>
+        </div>
+    </div>
+    
+    <!-- Sign-Up Page -->
+    <div class="container page" id="sign-up-page" style="display:none;">
+        <h2>Create an Account</h2>
+        <form onsubmit="signUp(event)">
+            <input type="text" id="forename" placeholder="Enter your forename" required>
+            <input type="text" id="surname" placeholder="Enter your surname" required>
+            <input type="email" id="signUpEmail" placeholder="Enter your email" required>
+            <input type="password" id="signUpPassword" placeholder="Create a password" required>
+            <br>
+            <input type="checkbox" id="terms-signup"> I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            <br><br>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <!-- User Type Selection Page -->
+    <div class="container page" id="user-type-selection" style="display:none;">
+        <h2>Who are you?</h2>
+        <button id="staff" onclick="showPage('teacher-dashboard-page')">Staff</button>
+        <button id="student" onclick="showPage('access-code-page')">Student</button>
+        <button id="Genral user" onclick="showPage('teacher-dashboard-page')">User Dashboard</button>
+    </div>
+
+    <!-- Access Code Page -->
+    <div class="container page" id="access-code-page" style="display:none;">
+        <h2>Access Code</h2>
+        <form onsubmit="validateAccessCode(event)">
+            <input type="text" id="accessCode" placeholder="Enter your access code" required>
+            <br>
+            <input type="checkbox" id="terms"> I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            <br><br>
+            <button type="submit">Continue</button>
+        </form>
+    </div>
+    
+    <!-- Teacher Dashboard Page -->
+    <div class="dashboard-container page" id="teacher-dashboard-page" style="display:none;">
+        <div class="dashboard-card">
+            <h2 class="card-title">Teacher Dashboard</h2>
+            <p class="card-text">Welcome to the teacher's dashboard!</p>
+            <button onclick="continueToNextPage()">Go to Next Page</button>
+        </div>
+    </div>
+
+    <!-- Student Dashboard Page -->
+    <div class="dashboard-container page" id="student-dashboard-page" style="display:none;">
+        <div class="dashboard-card">
+            <h2 class="card-title">Student Dashboard</h2>
+            <p class="card-text">Welcome to the student's dashboard!</p>
+            <button onclick="continueToNextPage()">Go to Next Page</button>
+        </div>
+    </div>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookie-banner">
+        <div class="cookie-text">
+            We use cookies to enhance your experience on our website.
+        </div>
+        <div class="cookie-buttons">
+            <button class="accept" onclick="hideCookieBanner()">Accept</button>
+            <button class="manage">Manage</button>
+        </div>
+    </div>
+</body>
+</html>
