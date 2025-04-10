@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Ethics in Conservation{% endblock %}
+
+{% block content %}
+    <div class="browse-header">
+        <div class="container">
+            <h1>Ethics in Conservation</h1>
+        </div>
+    </div>
+
+    <div class="browse-content">
+        <div class="container">
+            <div class="file-grid">
+                {% for file in files %}
+                <div class="file-card">
+                    <h3>{{ file.filename }}</h3>
+                    <p>Uploaded: {{ file.upload_date.strftime('%Y-%m-%d') }}</p>
+                    <a href="{{ url_for('download_file', filename=file.filename) }}" download>Download</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}
