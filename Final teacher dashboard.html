@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Komodo Hub - Conservation Educator Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2E7D32; /* Conservation green */
+      --primary-light: #81C784;
+      --primary-dark: #1B5E20;
+      --secondary: #FFAB00; /* Yayasan Komodo gold */
+      --accent: #5D4037; /* Earth brown */
+      --danger: #C62828; /* Critical alerts */
+      --dark: #263238;
+      --light: #f5f5f5;
+      --white: #ffffff;
+      --welcome-text: #0d2a1b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-blend-mode: overlay;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      grid-template-rows: 80px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Header - Komodo Hub Branding */
+    .header {
+      grid-column: 2 / 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      backdrop-filter: blur(5px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .notification {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .notification:hover {
+      background: rgba(255,255,255,0.9);
+      transform: translateY(-2px);
+    }
+
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--danger);
+      color: var(--white);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Enhanced User Profile - Conservation Theme */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.7);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .user-profile:hover {
+      background: rgba(255,255,255,0.9);
+      transform: translateY(-2px);
+    }
+
+    .user-profile img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--secondary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .user-profile span {
+      color: var(--dark);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    /* Sidebar - Conservation Navigation */
+    .sidebar {
+      grid-row: 1 / 3;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px 0;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Komodo Hub Logo with Conservation Theme */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 0 20px 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .logo img {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover img {
+      transform: rotate(-5deg) scale(1.05);
+    }
+
+    .logo h1 {
+      font-size: 22px;
+      color: var(--primary-dark);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .menu {
+      padding: 0 10px;
+    }
+
+    .menu-item {
+      margin-bottom: 5px;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .menu-item:hover {
+      transform: translateX(5px);
+    }
+
+    .menu-item a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 15px;
+      color: var(--dark);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .menu-item a:hover {
+      background-color: var(--primary-light);
+      color: var(--white);
+    }
+
+    .menu-item a.active {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    .menu-item i {
+      width: 24px;
+      text-align: center;
+    }
+
+    /* Main Content - Conservation Focus */
+    .main-content {
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(5px);
+    }
+
+    /* Critical Alert - Endangered Species Focus */
+    .alert-banner {
+      background-color: var(--danger);
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(198, 40, 40, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0); }
+    }
+
+    .alert-banner i {
+      font-size: 24px;
+    }
+
+    /* Welcome Banner - Community Conservation */
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-image: url('https://images.unsplash.com/photo-1550853024-https://images.unsplash.cohttps://images.unsplash.com/photo-1511884642898-4c92249e20b6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dm/photo-1469474968028-56623f02e42e?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?ixlib=rb-1.2.1&=format&fit=crop&w=1350&q=80');
+      background-blend-mode: multiply;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .welcome-banner h2 {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      position: relative;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .welcome-banner p {
+      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+      position: relative;
+    }
+
+    /* Conservation Stats Cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background-color: var(--white);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border-left: 5px solid var(--primary);
+    }
+
+    .stat-card.critical {
+      border-left-color: var(--danger);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card h3 {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+
+    .stat-card.critical .value {
+      color: var(--danger);
+    }
+
+    .stat-card .icon {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      color: var(--primary-light);
+      opacity: 0.3;
+      font-size: 40px;
+    }
+
+    /* Endangered Species Grid - BPS Data Integration */
+    .species-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .species-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .species-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .species-image {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .species-image::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    }
+
+    .species-content {
+      padding: 15px;
+    }
+
+    .species-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--primary-dark);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .species-latin {
+      font-style: italic;
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .species-status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .status-critical {
+      background-color: #FFEBEE;
+      color: var(--danger);
+    }
+
+    .species-description {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .species-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* Conservation Action Buttons */
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .section-title {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 10px;
+    }
+
+    .section-title i {
+      color: var(--primary);
+    }
+
+    /* Community Activity Feed */
+    .recent-activity {
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .activity-list {
+      list-style: none;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .activity-item:hover {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .activity-details {
+      flex-grow: 1;
+    }
+
+    .activity-title {
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .activity-time {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .activity-location {
+      display: inline-block;
+      padding: 2px 6px;
+      background-color: #E8F5E9;
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--primary-dark);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        grid-row: auto;
+      }
+      
+      .header {
+        grid-column: auto;
+      }
+    }
+
+    /* Komodo Hub Branding Elements */
+    .komodo-badge {
+      background-color: var(--secondary);
+      color: var(--dark);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    /* Access Code Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 25px;
+      border-radius: 12px;
+      width: 400px;
+      max-width: 90%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      position: relative;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+      color: var(--danger);
+    }
+
+    .access-code-display {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      margin: 20px 0;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      color: var(--primary-dark);
+      border: 2px dashed var(--primary-light);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .code-info {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+
+    .code-info i {
+      color: var(--primary);
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="logo.jpg" alt="Komodo Hub Logo">
+        <h1>Komodo Hub <span class="komodo-badge">BETA</span></h1>
+      </div>
+      <nav class="menu">
+        <div class="menu-item">
+          <a href="#" class="active">
+            <i class="fas fa-home"></i>
+            <span>Conservation Dashboard</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#">
+            <i class="fas fa-book-open"></i>
+            <span>Syllabus</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#">
+            <i class="fas fa-users"></i>
+            <span>Student Researchers</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#">
+            <i class="fas fa-paw"></i>
+            <span>Species Tracker</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Habitat Protection</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#">
+            <i class="fas fa-camera"></i>
+            <span>Wildlife Reports</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#">
+            <i class="fas fa-hands-helping"></i>
+            <span>Community Programs</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#">
+            <i class="fas fa-chart-line"></i>
+            <span>BPS Conservation Data</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a href="#" id="generateAccessCodeBtn">
+            <i class="fas fa-key"></i>
+            <span>Generate Access Codes</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-actions">
+        <div class="notification">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span class="badge">3</span>
+        </div>
+        <div class="user-profile">
+          <img src="doctor.png" alt="Profile">
+          <span>Dr. Siti Rahayu</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="alert-banner">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+          <strong>BPS Alert:</strong> Javan Rhino population now at 68 individuals. Urgent conservation action needed in Ujung Kulon.
+        </div>
+      </div>
+
+      <div class="welcome-banner">
+        <h2> Welcome Dr. Rahayu!</h2>
+        <p>5 new wildlife reports from your student researchers in Sumatra and Java.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <i class="fas fa-user-graduate icon"></i>
+          <h3>Student Researchers</h3>
+          <div class="value">127</div>
+          <div class="change">+8 from local schools</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-paw icon"></i>
+          <h3>Species Tracked</h3>
+          <div class="value">23</div>
+          <div class="change">3 new endemic species</div>
+        </div>
+        <div class="stat-card critical">
+          <i class="fas fa-exclamation-triangle icon"></i>
+          <h3>Critically Endangered</h3>
+          <div class="value">7</div>
+          <div class="change">Per BPS 2023 Data</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-map-marker-alt icon"></i>
+          <h3>Protected Habitats</h3>
+          <div class="value">14</div>
+          <div class="change">Across Indonesia</div>
+        </div>
+      </div>
+
+      <h3 class="section-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        Critically Endangered Species (BPS 2023 Data)
+      </h3>
+      <div class="species-grid">
+        <div class="species-card">
+          <div class="species-image" style="background-image: url('https://images.unsplash.com/photo-1599036583220-c3e0093f2bd1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"></div>
+          <div class="species-content">
+            <h4 class="species-title">Sumatran Tiger <span><i class="fas fa-long-arrow-alt-down" style="color: var(--danger)"></i> 12%</span></h4>
+            <div class="species-latin">Panthera tigris sumatrae</div>
+            <span class="species-status status-critical">CRITICALLY ENDANGERED</span>
+            <p class="species-description">Only 94 individuals remain according to BPS. Primary threat: habitat fragmentation from palm oil plantations.</p>
+            <div class="species-stats">
+              <span><i class="fas fa-map-marker-alt"></i> Sumatra</span>
+              <span><i class="fas fa-users"></i> 18 researchers</span>
+            </div>
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+              <a href="#" class="btn">View Conservation Plan</a>
+              <a href="#" class="btn btn-outline">Report Sighting</a>
+            </div>
+          </div>
+        </div>
+        <div class="species-card">
+          <div class="species-image" style="background-image: url('https://plus.unsplash.com/premium_photo-1664302732701-493f8a41ab69?q=80&w=2077&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"></div>
+          <div class="species-content">
+            <h4 class="species-title">Javan Rhino <span><i class="fas fa-long-arrow-alt-down" style="color: var(--danger)"></i> 5%</span></h4>
+            <div class="species-latin">Rhinoceros sondaicus</div>
+            <span class="species-status status-critical">CRITICALLY ENDANGERED</span>
+            <p class="species-description">Population now at 68 individuals in Ujung Kulon. Conservation breeding program in progress with Yayasan Komodo.</p>
+            <div class="species-stats">
+              <span><i class="fas fa-map-marker-alt"></i> Java</span>
+              <span><i class="fas fa-users"></i> 9 researchers</span>
+            </div>
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+              <a href="#" class="btn">View Conservation Plan</a>
+              <a href="#" class="btn btn-outline">Report Sighting</a>
+            </div>
+          </div>
+        </div>
+        <div class="species-card">
+          <div class="species-image" style="background-image: url('https://images.unsplash.com/photo-1569573823650-4ed627386029?q=80&w=2132&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D://images.unsplash.com/photo-1551085255-e4b03fb9d5a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+          <div class="species-content">
+            <h4 class="species-title">Bali Myna <span><i class="fas fa-long-arrow-alt-down" style="color: var(--danger)"></i> 8%</span></h4>
+            <div class="species-latin">Leucopsar rothschildi</div>
+            <span class="species-status status-critical">CRITICALLY ENDANGERED</span>
+            <p class="species-description">Fewer than 100 mature individuals in Bali Barat National Park. Threatened by illegal wildlife trade.</p>
+            <div class="species-stats">
+              <span><i class="fas fa-map-marker-alt"></i> Bali</span>
+              <span><i class="fas fa-users"></i> 7 researchers</span>
+            </div>
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+              <a href="#" class="btn">View Conservation Plan</a>
+              <a href="#" class="btn btn-outline">Report Sighting</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-activity">
+        <h3 class="section-title">
+          <i class="fas fa-clock"></i>
+          Recent Community Conservation Activities
+        </h3>
+        <ul class="activity-list">
+          <li class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-paw"></i>
+            </div>
+            <div class="activity-details">
+              <div class="activity-title">Sumatran Tiger sighting confirmed near Bukit Barisan <span class="activity-location">North Sumatra</span></div>
+              <div class="activity-time">Reported by SMA Negeri 1 Medan • 2 hours ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-tree"></i>
+            </div>
+            <div class="activity-details">
+              <div class="activity-title">Illegal logging detected in Javan Rhino habitat <span class="activity-location">Ujung Kulon</span></div>
+              <div class="activity-time">Reported by Komunitas Peduli Badak • 5 hours ago</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-camera"></i>
+            </div>
+            <div class="activity-details">
+              <div class="activity-title">Camera trap captured Tarsius family <span class="activity-location">Tangkoko Reserve</span></div>
+              <div class="activity-time">Reported by SMPN 2 Bitung • Yesterday</div>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="activity-details">
+              <div class="activity-title">New conservation group registered <span class="activity-location">Denpasar</span></div>
+              <div class="activity-time">2 days ago • 12 new members</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Access Code Modal -->
+      <div id="accessCodeModal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <h3><i class="fas fa-key"></i> Generated Access Code</h3>
+          <div class="access-code-display" id="generatedCode">
+            Click "Generate" to create a code
+          </div>
+          <div class="modal-actions">
+            <button id="generateNewCode" class="btn">
+              <i class="fas fa-sync-alt"></i> Generate New Code
+            </button>
+            <button id="copyCodeBtn" class="btn btn-outline">
+              <i class="far fa-copy"></i> Copy Code
+            </button>
+          </div>
+          <div class="code-info">
+            <p><i class="fas fa-info-circle"></i> This code expires in 7 days</p>
+            <p><i class="fas fa-users"></i> Valid for community registration</p>
+          </div>
+        </div>
+      </div>
+      
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Highlight active menu item
+      const menuItems = document.querySelectorAll('.menu-item a');
+      menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          menuItems.forEach(i => i.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Notification click - Komodo Hub Alert
+      const notification = document.querySelector('.notification');
+      notification.addEventListener('click', function() {
+        alert('Urgent conservation alerts:\n1. Javan Rhino population decline\n2. New Sumatran Tiger sighting\n3. Illegal logging report');
+      });
+
+      // Access Code Generation Functionality
+      function generateRandomCode() {
+        const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No confusing characters
+        let result = '';
+        for (let i = 0; i < 6; i++) {
+          if (i > 0 && i % 4 === 0) result += '-';
+          result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+      }
+
+      // Modal functionality
+      const accessCodeBtn = document.getElementById('generateAccessCodeBtn');
+      const modal = document.getElementById('accessCodeModal');
+      const closeModal = document.querySelector('.close-modal');
+      const generateNewBtn = document.getElementById('generateNewCode');
+      const copyBtn = document.getElementById('copyCodeBtn');
+      const codeDisplay = document.getElementById('generatedCode');
+
+      // Open modal when Generate Access Code is clicked
+      accessCodeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        modal.style.display = 'block';
+        codeDisplay.textContent = generateRandomCode();
+      });
+
+      // Close modal when X is clicked
+      closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+
+      // Generate new code when button clicked
+      generateNewBtn.addEventListener('click', function() {
+        codeDisplay.textContent = generateRandomCode();
+      });
+
+      // Copy code to clipboard
+      copyBtn.addEventListener('click', function() {
+        const code = codeDisplay.textContent;
+        navigator.clipboard.writeText(code).then(function() {
+          const originalText = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          setTimeout(function() {
+            copyBtn.innerHTML = originalText;
+          }, 2000);
+        });
+      });
+
+      // Close modal when clicking outside
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+
+      // Simulate conservation data updates
+      setInterval(() => {
+        const stats = document.querySelectorAll('.stat-card .value');
+        stats.forEach(stat => {
+          if(Math.random() > 0.7) {
+            const current = parseInt(stat.textContent);
+            stat.textContent = current + (Math.random() > 0.5 ? 1 : -1);
+            stat.style.color = '#FF5722';
+            setTimeout(() => {
+              stat.style.color = '';
+            }, 1000);
+          }
+        });
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
