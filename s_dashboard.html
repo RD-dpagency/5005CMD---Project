@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komodo Hub Student Dashboard</title>
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <section id="menu">
+        <div class = "logo">
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            <h2>Komodo Hub</h2>
+        </div>
+
+        <!-- Menu -->
+        <div class = "items">
+            <li><i class="fa fa-tachometer" aria-hidden="true"></i><a href="#">Dashboard</a></li>
+            <li><i class="fa fa-user" aria-hidden="true"></i><a href="#">Account</a></li>
+            <li><i class="fa fa-flag-checkered" aria-hidden="true"></i><a href="http://localhost:3000/report-sighting" target="_blank">Report Sighting</a></li>
+            <li><i class="fa fa-book" aria-hidden="true"></i><a href="{{ url_for('library') }}">Digital Library</a></li>
+            <li><i class="fa fa-comments" aria-hidden="true"></i><a href="{{ url_for('messaging') }}">Messaging</a>
+        </div>
+        <div class="button" style="width:100%; height:100%">
+            <a href= "{{ url_for('login') }}">
+                <button style="font-size: 25px; background-color:black; color: white; border-radius:25px;">Sign Out</button>
+            </a>
+        </div>
+    </section>
+
+    <section id = "interface">
+        <div class="navigation">
+            <div class = "n1">
+                <div class="search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+
+            <div class="profile">
+                <i class = "far fa-bell"></i>
+                <img src="{{ url_for('static', filename='images/pic.png') }}" alt="">
+
+
+            </div>
+        </div>
+
+        <h3 class="i-name">
+            Welcome to Class #{{access_code}}
+        </h3>
+
+        <div class="values">
+            <div class="val-box">
+                <i class="fas fa-users"></i>
+                <div>
+                    <h3>1</h3>
+                    <span>Enrolled Program</span>
+                </div>
+            </div>
+            <div class="val-box">
+                <i class="fa fa-tasks"></i>
+                <div>
+                    <h3>20</h3>
+                    <span>Challenges Complete</span>
+                </div>
+            </div>
+            <div class="val-box">
+                <i class="fa fa-tasks" aria-hidden="true"></i>
+                <div>
+                    <h3>3</h3>
+                    <span>Activities Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="board">
+            <h3>Click on the tiger or komodo dragon to learn more!</h3>
+            <a href="https://www.fauna-flora.org/species/sumatran-tiger/">
+                <img src="{{ url_for('static', filename='images/tiger.jpg') }}" width="500" height="600">
+            </a>
+            <a href = "https://globalconservation.org/endangered-species/komodo-dragon#:~:text=While%20they%20eat%20a%20wide,Endangered%20on%20IUCN's%20Red%20list.">
+                <img src="{{ url_for('static', filename='images/komodo.jpg') }}" width="500" height="600">
+            </a>
+        </div>
+
+    </section>
+
+</body>
+</html>
