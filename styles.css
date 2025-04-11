@@ -1,0 +1,217 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    width: 100%;
+    background: #e5e7eb;
+    position: relative;
+    display: flex;
+}
+
+/*sidebar customization */
+#menu {
+    background: #0CC143;
+    width: 300px;
+    height: 100%;
+}
+
+
+/*Allowing the logo and sidebar to be on the same line */
+#menu .logo{
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 30px 0 0 30px;
+}
+
+
+
+/*Reducing the size of the logo in the sidebar */
+#menu .logo img{
+    width:40px;
+    margin-right: 15px;
+}
+
+#menu .items {
+    margin-top: 40px;
+}
+
+#menu .items li{
+    list-style: none;
+    padding: 15px 0;
+    transition: 0.3s ease ;
+}
+
+/*Logo icons */
+#menu .items li i{
+    color: #000;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 14px;
+    margin: 0 10px 0 25px;
+}
+
+/*Sidebar menu text */
+#menu .items li a{
+    text-decoration: none;
+    color: #fff;
+    font-weight: 300px;
+    transition: 0.3s ease ;
+}
+
+#menu .items li:hover{
+    background: #253047;
+    cursor: pointer;
+}
+
+#menu .items li:nth-child(1){
+    border-left: 4px solid #fff;
+}
+
+#menu .items li:hover i,
+#menu .items li:hover a{
+    color: #f3f4f6;
+}
+
+#interface{
+    width: calc(100% - 300px);
+}
+
+/*navigation bar including profile and bell */
+#interface .navigation{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 15px 30px;
+    border-bottom: 3px solid #0CC143;
+}
+
+#interface .navigation .search{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 14px;
+    border: 1px solid #d7dbe6;
+    border-radius: 4px;
+}
+
+/*Add space between elements in nav bar
+ */
+#interface .navigation .search i{
+    margin-right: 14px;
+
+}
+
+/*Navigation search bar input */
+#interface .navigation .search input{
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+#interface .navigation .profile{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#interface .navigation .profile i {
+    margin-right: 20px;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+#interface .navigation .profile img{
+    width:30px;
+    height:30px;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+.i-name{
+    color: #444a53;
+    padding: 30px 30px 0 30px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+/*Cards being shown */
+.values {
+    padding: 30px 30px 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap:  wrap;
+}
+
+.values .val-box{
+    background: #fff;
+    width:235px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    display:flex;
+    justify-content : flex-start;
+    align-items: center;
+}
+
+.values .val-box i{
+    font-size: 25px;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    text-align: center;
+    color: #000;
+    background: #0CC143;
+    
+    margin-right: 15px;
+}
+
+.values .val-box h3{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.values .val-box span{
+    font-size: 15px;
+    color: #828997;
+}
+
+.board{
+    margin: 40px 100px;
+    justify-content: space-between;
+    font-size: 30px;
+    text-align: center;
+}
+
+#menu .button{
+    border: none;
+    border-radius: 30;
+    padding: 30px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button1{
+    border: none;
+    color: #000;
+    padding: 30px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
