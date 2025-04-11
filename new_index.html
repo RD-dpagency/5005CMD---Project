@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Komodo Hub Messaging System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        .chat-container {
+      width: 400px;
+      height: 500px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      background: #f9f9f9;
+      overflow: hidden;
+    }
+
+    /*.chat-header {
+      padding: 10px;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }*/
+
+    /*.chat-window {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: white;
+      border-bottom: 1px solid #ddd;
+    }*/
+
+    .message {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      max-width: 70%;
+    }
+
+    .message.sent {
+      background: #28a745;
+      color: white;
+      margin-left: auto;
+    }
+
+    .message.received {
+      background: #f1f1f1;
+      color: #333;
+      margin-right: auto;
+    }
+
+    /*.message-input-box { 
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #f9f9f9;
+    }
+
+    textarea {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      resize: none;
+    }*/
+
+    button {
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+    </style>
+</head>
+<body>
+<script type = "text/javascript">
+    $(document).ready(function() {
+        var socket = io.connect("http://192.168.1.105:5000")
+        socket.on('connect',function() {
+            socket.send("User Connected!");
+        });
+
+        socket.on('message', function(data) {
+            $('#messages').append($('<p>').text(data));
+        });
+
+        $('#sendButton').on('click', function () {
+            socket.send($('#user').val() + ': ' + $('#message').val());
+            $('#message').val(''); 
+            
+        });
+            
+    });
+</script>
+
+<div class="chat-container">
+    <div class="chat-header" id="chatHeader">Chat</div>
+    <div class="chat-window" id ="messages"></div>
+    <div class="message-input-box">
+      <textarea id="user" placeholder="Type your username..."></textarea>
+      <textarea id="message" placeholder="Type your message..."></textarea>
+      <button id="sendButton">Send</button>
+    </div>
+  </div> 
+</body>
+</html>
